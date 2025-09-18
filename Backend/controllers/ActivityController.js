@@ -4,9 +4,20 @@ const DailyData = require("../models/DailyData");
 
 const addactivity = async (req, res) => {
   try {
-    const { title, carbonFactor, user, Date ,electricity,petrol,gas,diesel,paper,water} = req.body;
+    const {
+      title,
+      carbonFactor,
+      user,
+      Date,
+      electricity,
+      petrol,
+      gas,
+      diesel,
+      paper,
+      water,
+    } = req.body;
 
-    if (!title||!carbonFactor||!user||!Date) {
+    if (!title || !carbonFactor || !user || !Date) {
       throw Error("Fill All The Data Carefully");
     }
 
@@ -15,7 +26,9 @@ const addactivity = async (req, res) => {
     const addac = await Activity.create(req.body);
 
     // Find or create DailyData  orr Update DailyData for the specified Date
-    let findDailyData = await DailyData.findOne({$and: [{ Date: Date },{user:user}]});
+    let findDailyData = await DailyData.findOne({
+      $and: [{ Date: Date }, { user: user }],
+    });
     if (!findDailyData) {
       findDailyData = await DailyData.create({
         carbonFactorTotal: carbonFactor,
@@ -27,12 +40,12 @@ const addactivity = async (req, res) => {
       const updatedCf = findDailyData.carbonFactorTotal + carbonFactor;
 
       findDailyData = await DailyData.findOneAndUpdate(
-        {$and: [{ Date: Date },{user:user}]},
+        { $and: [{ Date: Date }, { user: user }] },
         { carbonFactorTotal: updatedCf },
         { new: true }
       );
     }
-// getting all the data in the daily activity 
+    // getting all the data in the daily activity
 
     // Update the user with the new activity and DailyData
     const updateUser = await User.findOneAndUpdate(
@@ -40,10 +53,11 @@ const addactivity = async (req, res) => {
       {
         $push: { Activity: addac },
         // DailyData:[newdailyactivty]
-
       },
       { new: true }
-    ).populate("DailyData").populate("Activity");
+    )
+      .populate("DailyData")
+      .populate("Activity");
 
     res.status(200).json(updateUser);
   } catch (e) {

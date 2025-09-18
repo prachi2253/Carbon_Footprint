@@ -4,11 +4,9 @@ dotenv.config()
 const Mongodburl = process.env.URL;
 const dbconnection=async()=>{
 try{
-
     mongoose.connect(Mongodburl).then(()=>{
         console.log("Data Base Connected Succ");
     }).catch((e)=>{
-        console.log(e)
         console.log("Error Ouccured At Connectig DataBase")
     })
 }catch(e){

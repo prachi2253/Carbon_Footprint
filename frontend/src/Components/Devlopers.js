@@ -3,7 +3,6 @@ import React from 'react'
 const Devlopers = () => {
   return (
     <div>
-    <div>
         <div className="developers">Developers</div>
         <div className="box1">
             <img src="923a3999-12ab-4191-bc9f-f7395866fc9e.jpg" alt="vishal" className='vi' />
@@ -18,8 +17,6 @@ const Devlopers = () => {
             <span className='pt'>Prachi Goyal<br />22UCC075<br />Frontend Developer</span>
         </div>
     </div> 
-
-    </div>
   )
 }
 

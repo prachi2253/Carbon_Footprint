@@ -2,94 +2,101 @@
 import React, { useState,useContext } from "react";
 import MyContext from "./createContext";
 const MyContextProvider = ({ children }) => {
+
   const [data, setData] = useState("Initial Value");
   const[DailyData,setDailyData]=useState([]);
   const[DailyDatac,setDailyDatac]=useState([]);
   const[userData,setUserdata]=useState({});
   const[activityData,setActivityData]=useState([]);
   const[goal,setuserGoal]=useState([]);
+  const[isLogin,setisLogin]=useState(false);
+
   const sendData=async(path,obj)=>{
-   const getdata = await  fetch(path, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify(obj)
-  })
+    const getdata = await  fetch(path, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+    })
   
-  const jsondata = await getdata.json();
-// console.log(jsondata);
+    const jsondata = await getdata.json();
+    
+    setUserdata({...jsondata})
+    if(!jsondata.error){
+      setActivityData([...jsondata.Activity]);
+      setisLogin(true);
 
-
-  setUserdata({...jsondata})
-  if(!jsondata.error){
-    setActivityData([...jsondata.Activity]);
-
-  }
-
-  console.log(activityData)
-  return jsondata
-  
+    }
+    return jsondata;
+    
 
   }
   const getDailydatauser=async(obj)=>{
-    const getdailldataus = await  fetch("https://ieee-api-tawny.vercel.app/activity/dailyactivity", {
+    const getdailydata = await  fetch("http://localhost:3001/activity/dailyactivity", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
       },
       body: JSON.stringify(obj)
-  })
-  const jsdd= await getdailldataus.json();
-setDailyData([...jsdd.daily]);
-return jsdd
+    })
+    const data= await getdailydata.json();
+    setDailyData([...data.daily]);
+    return data;
   }
-// for compare
-const getDailydatacompare=async(obj)=>{
-  const getdailldatac = await  fetch("https://ieee-api-tawny.vercel.app/activity/dailyactivity", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(obj)
-})
-const jsdd= await getdailldatac.json();
-if(jsdd.daily){
-  setDailyDatac(jsdd.daily);
+  // for compare
+  const getDailydatacompare=async(obj)=>{
+    const getdailldatac = await  fetch("http://localhost:3001/activity/dailyactivity", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(obj)
+    })
+    const data= await getdailldatac.json();
+    if(data.daily){
+      setDailyDatac(data.daily);
 
-}
-return jsdd
-}
+    }
+    return data;
+  }
 
-  const[isLogin,setisLogin]=useState(false);
-const setGoal=async(obj)=>{
-  const getallgoal = await  fetch("https://ieee-api-tawny.vercel.app/activity/getgoal", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(obj)
-})
-const jsdd= await getallgoal.json();
-setuserGoal([...jsdd]);
-console.log(jsdd);
-}
+ 
+  const setGoal=async(obj)=>{
+    const getallgoal = await  fetch("http://localhost:3001/activity/getgoal", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(obj)
+    })
+    const data= await getallgoal.json();
+    setuserGoal([...data]);
+  }
 
-const addGoal=async(obj)=>{
-  const addgoal = await  fetch("https://ieee-api-tawny.vercel.app/activity/addgoal", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(obj)
-})
+  const addGoal=async(obj)=>{
+    const addgoal = await  fetch("http://localhost:3001/activity/addgoal", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(obj)
+    })
 
-// const jsa= await addGoal.json();
+    const data= await addgoal.json();
+    if(data.success){
+      setuserGoal([...goal,data.goal]);
+    }
 
-}
-const logout=()=>{
-  
-}
+  }
+  const logout=()=>{
+    setisLogin(false);
+    setUserdata({});
+    setActivityData([]);
+    setDailyData([]);
+    setDailyDatac([]);
+    setuserGoal([]);
+  }
 const obj ={data,setData,sendData,setDailyDatac,goal,DailyDatac,addGoal,getDailydatacompare,setGoal,getDailydatauser,isLogin,setisLogin,userData,activityData,DailyData,setDailyData}
   return (
     <MyContext.Provider value={obj}>
