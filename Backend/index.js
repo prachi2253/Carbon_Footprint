@@ -22,16 +22,32 @@ const options = {
 };
 const logger = createLogger(options);
 app.use(express.json());
-app.use(cors({
-  origin: 'https://cf-plum-omega.vercel.app', // your deployed frontend
+
+// Dynamic CORS configuration
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001', 
+  'https://cf-plum-omega.vercel.app'
+  // Add your actual deployed backend URL here when you know it
+];
+
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'development' 
+    ? true // Allow all origins in development
+    : function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  credentials: true // if you use cookies
-}));
-app.options('*', cors({
-  origin: 'https://cf-plum-omega.vercel.app',
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  credentials: true
-}));
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 
 const dbconnection = require("./config/DB_Con");
