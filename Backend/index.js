@@ -22,7 +22,17 @@ const options = {
 };
 const logger = createLogger(options);
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://cf-plum-omega.vercel.app', // your deployed frontend
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true // if you use cookies
+}));
+app.options('*', cors({
+  origin: 'https://cf-plum-omega.vercel.app',
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true
+}));
+
 
 const dbconnection = require("./config/DB_Con");
 dbconnection();
