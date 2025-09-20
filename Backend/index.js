@@ -27,27 +27,42 @@ app.use(express.json());
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001', 
-  'https://cf-plum-omega.vercel.app'
-  // Add your actual deployed backend URL here when you know it
+  'https://cf-plum-omega.vercel.app',
+  'https://carbon-footprint-ieee-7dr70vezu-prachi-goyals-projects.vercel.app',
+  'https://carbon-footprint-ieee.vercel.app' // In case URL changes
 ];
 
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'development' 
-    ? true // Allow all origins in development
-    : function (origin, callback) {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Allow all Vercel domains
+    if (origin.includes('.vercel.app') || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin']
 };
 
 app.use(cors(corsOptions));
+
+// Additional preflight handling for complex requests
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
 
 
 const dbconnection = require("./config/DB_Con");
