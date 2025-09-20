@@ -56,7 +56,7 @@ const Calculator = () => {
       paper * 1.04;
     formdata.carbonFactor = cff;
     const bool = await sendData(
-      "http://localhost:3001/activity/addactivity",
+      "https://carbon-footprint-ieee-7dr70vezu-prachi-goyals-projects.vercel.app/activity/addactivity",
       formdata
     );
     if (bool.error) {

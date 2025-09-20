@@ -33,7 +33,7 @@ const MyContextProvider = ({ children }) => {
 
   }
   const getDailydatauser=async(obj)=>{
-    const getdailydata = await  fetch("http://localhost:3001/activity/dailyactivity", {
+    const getdailydata = await  fetch("https://carbon-footprint-ieee-7dr70vezu-prachi-goyals-projects.vercel.app/activity/dailyactivity", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
@@ -46,7 +46,7 @@ const MyContextProvider = ({ children }) => {
   }
   // for compare
   const getDailydatacompare=async(obj)=>{
-    const getdailldatac = await  fetch("http://localhost:3001/activity/dailyactivity", {
+    const getdailldatac = await  fetch("https://carbon-footprint-ieee-7dr70vezu-prachi-goyals-projects.vercel.app/activity/dailyactivity", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
@@ -63,7 +63,7 @@ const MyContextProvider = ({ children }) => {
 
  
   const setGoal=async(obj)=>{
-    const getallgoal = await  fetch("http://localhost:3001/activity/getgoal", {
+    const getallgoal = await  fetch("https://carbon-footprint-ieee-7dr70vezu-prachi-goyals-projects.vercel.app/activity/getgoal", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
@@ -75,7 +75,7 @@ const MyContextProvider = ({ children }) => {
   }
 
   const addGoal=async(obj)=>{
-    const addgoal = await  fetch("http://localhost:3001/activity/addgoal", {
+    const addgoal = await  fetch("https://carbon-footprint-ieee-7dr70vezu-prachi-goyals-projects.vercel.app/activity/addgoal", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"

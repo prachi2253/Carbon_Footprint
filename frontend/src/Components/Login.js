@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   const onSumbit = async () => {
-    const bool = await sendData("http://localhost:3001/user/login", formData);
+    const bool = await sendData("https://carbon-footprint-ieee-7dr70vezu-prachi-goyals-projects.vercel.app/user/login", formData);
     if (bool.error) {
       setError(bool.error);
     } else {

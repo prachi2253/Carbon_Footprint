@@ -53,7 +53,7 @@ const SignUp = () => {
   };
   const onSumbit = async () => {
     //  const bool = await sendData("https://ieee-api-tawny.vercel.app/user/signup",formData);
-    const bool = await sendData("http://localhost:3001/user/signup", formData);
+    const bool = await sendData("https://carbon-footprint-ieee-7dr70vezu-prachi-goyals-projects.vercel.app/user/signup", formData);
     if (bool.error) {
       setError(bool.error);
     } else {
